@@ -23,7 +23,7 @@ RUN wget https://builds.parsec.app/package/parsec-linux.deb \
 RUN cp /usr/share/extra/backgrounds/bg_kasm.png /usr/share/extra/backgrounds/bg_default.png
 #RUN apt-get remove -y xfce4-panel
 
-run /usr/bin/parsecd
+RUN /usr/bin/parsecd
 
 ######### End Customizations ###########
 

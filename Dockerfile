@@ -8,22 +8,16 @@ WORKDIR $HOME
 
 ######### Customize Container Here ###########
 
+COPY ./install_parsec.sh $INST_SCRIPTS/install_parsec.sh
+RUN bash $INST_SCRIPTS/install_parsec.sh && rm -rf $INST_SCRIPTS/install_parsec.sh
 
+COPY ./custom_startup.sh $STARTUPDIR/custom_startup.sh
+RUN chmod +x $STARTUPDIR/custom_startup.sh
+RUN chmod 755 $STARTUPDIR/custom_startup.sh
 
-RUN wget https://builds.parsec.app/package/parsec-linux.deb \
-    && apt-get update \
-#    && apt-get install libssl-dev \
-    && apt-get install ./parsec-linux.deb \
-    && cp /usr/share/applications/parsecd.desktop $HOME/Desktop/ \
-    && chmod +x $HOME/Desktop/parsecd.desktop \
-    && chown 1000:1000 $HOME/Desktop/parsecd.desktop 
-#    && /usr/share/applications/parsecd.desktop
-
-#RUN cp $HOME/.config/xfce4/xfconf/single-application-xfce-perchannel-xml/* $HOME/.config/xfce4/xfconf/xfce-perchannel-xml/
+RUN cp $HOME/.config/xfce4/xfconf/single-application-xfce-perchannel-xml/* $HOME/.config/xfce4/xfconf/xfce-perchannel-xml/
 RUN cp /usr/share/extra/backgrounds/bg_kasm.png /usr/share/extra/backgrounds/bg_default.png
-#RUN apt-get remove -y xfce4-panel
-
-RUN /usr/bin/parsecd
+RUN apt-get remove -y xfce4-panel
 
 ######### End Customizations ###########
 

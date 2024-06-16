@@ -1,4 +1,4 @@
-FROM kasmweb/core-ubuntu-focal:1.12.0
+FROM kasmweb/core-ubuntu-focal:1.15.0
 USER root
 
 ENV HOME /home/kasm-default-profile
@@ -8,15 +8,15 @@ WORKDIR $HOME
 
 ######### Customize Container Here ###########
 
-COPY ./install_parsec.sh $INST_SCRIPTS/install_parsec.sh
-RUN bash $INST_SCRIPTS/install_parsec.sh && rm -rf $INST_SCRIPTS/install_parsec.sh
+RUN wget https://builds.parsec.app/package/parsec-linux.deb \
+	&& apt-get update \
+	&& apt-get install -y ./parsec-linux.deb \
+	&& rm parsec-linux.deb
 
-COPY ./custom_startup.sh $STARTUPDIR/custom_startup.sh
-RUN chmod +x $STARTUPDIR/custom_startup.sh
-RUN chmod 755 $STARTUPDIR/custom_startup.sh
+RUN echo "/usr/bin/desktop_ready && /usr/bin/parsecd &" > $STARTUPDIR/custom_startup.sh \
+	&& chmod +x $STARTUPDIR/custom_startup.sh
 
 RUN cp $HOME/.config/xfce4/xfconf/single-application-xfce-perchannel-xml/* $HOME/.config/xfce4/xfconf/xfce-perchannel-xml/
-RUN cp /usr/share/extra/backgrounds/bg_kasm.png /usr/share/extra/backgrounds/bg_default.png
 RUN apt-get remove -y xfce4-panel
 
 ######### End Customizations ###########
